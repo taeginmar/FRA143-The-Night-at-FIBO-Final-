@@ -1,105 +1,31 @@
-#include <iostream>
-#include <windows.h>
-#include <conio.h>
-#include "Menu.h"
 #include "Game.h"
-#include "config.h"
+#include "Menu.h"
+#include <iostream>
+#include <conio.h>
+#include <windows.h>
 
 int main() {
-    std::cout << ">>> PROGRAM STARTING... <<<" << std::endl; // เช็คว่ารันติดไหม
-    system("pause");
+    system("chcp 65001 > nul");
 
-    SetConsoleOutputCP(65001);
-    SetConsoleCP(65001);
-    
-    Menu menu;
-    if (!menu.showLobby()) {
-        // ตาม Flowchart: ถ้าผู้เล่นกดออก/ข้าม จะโผล่ไปหน้า Behind the Scenes
-        system("cls");
-        std::cout << "=====================================================" << std::endl;
-        std::cout << "          [ เบื้องหลังการทำงาน / เครดิตผู้จัดทำ ]            " << std::endl;
-        std::cout << "=====================================================" << std::endl;
-        std::cout << " ขอบคุณที่ให้ความสนใจเกม 'The Night at FIBO'!" << std::endl;
-        std::cout << " (ใส่ข้อมูลเครดิตผู้พัฒนาหรือเบื้องหลังตรงนี้นะครับ)" << std::endl;
-        std::cout << "\n>> กดปุ่มใดๆ เพื่อออกจากโปรแกรม..." << std::endl;
-        _getch();
+    Menu gameMenu;
+    if (!gameMenu.showLobby()) {
         return 0; 
     }
 
-    GameConfig currentConfig = menu.fillApplication();
+    GameConfig config = gameMenu.fillApplication();
 
-    // เช็ค Consent การยอมรับ Jumpscare ตามใบสมัคร
-    if (!currentConfig.enableJumpscare) {
-        system("cls");
-        std::cout << "=====================================================" << std::endl;
-        std::cout << "               [ ประกาศจากแผนกบุคคล ]                 " << std::endl;
-        std::cout << "=====================================================" << std::endl;
-        std::cout << " เนื่องจากสภาวะทางสุขภาพของคุณ ทางเราไม่สามารถมอบหมายงานกะดึก " << std::endl;
-        std::cout << " ให้คุณได้ ซึ่งเป็นไปตามกฎระเบียบความปลอดภัยอย่างเคร่งครัด" << std::endl;
-        std::cout << " \n กำลังนำคุณไปยังหน้าเบื้องหลังการทำงานแทน..." << std::endl;
-        std::cout << "\n>> กดปุ่มใดๆ เพื่อทำรายการต่อ..." << std::endl;
-        _getch();
-        
-        // ข้ามไปโชว์หน้า Behind the scenes
-        system("cls");
-        std::cout << "=====================================================" << std::endl;
-        std::cout << "          [ เบื้องหลังการทำงาน / เครดิตผู้จัดทำ ]            " << std::endl;
-        std::cout << "=====================================================" << std::endl;
-        std::cout << " ขอบคุณที่ให้ความสนใจเกม 'The Night at FIBO'!" << std::endl;
-        std::cout << " (ใส่ข้อมูลเครดิตผู้พัฒนาหรือเบื้องหลังตรงนี้นะครับ)" << std::endl;
-        std::cout << "\n>> กดปุ่มใดๆ เพื่อออกจากโปรแกรม..." << std::endl;
-        _getch();
-        return 0;
-    }
+    while (_kbhit()) _getch(); 
 
-    system("cls");
-    std::cout << "=========================================================\n";
-    std::cout << "               [ THE NIGHT AT FIBO : INTRO ]            \n";
-    std::cout << "=========================================================\n\n";
+  
+    Game game(config);
+    game.setupAnomalyPlan(); // ตั้งค่าพลังงานและสุ่มผี
+    game.run();              // เข้าสู่ Loop เกม (มี processInput/update/render ข้างในแล้ว)
+
+    std::cout << "\n>> ระบบปิดการทำงาน ขอบคุณที่ปฏิบัติหน้าที่ที่ FIBO <<" << std::endl;
+    std::cout << "กดปุ่มใดๆ เพื่อออกจากโปรแกรม..." << std::endl;
     
-    std::cout << " คุณคือ \"วิชัย\" อดีตช่างเทคนิคที่เพิ่งตกงาน...\n";
-    Sleep(2000);
-    std::cout << " ด้วยภาระหนี้สินทำให้คุณต้องจำใจรับงานกะดึกที่ตึก FIBO แห่งนี้\n";
-    Sleep(2000);
-    std::cout << " หน้าที่ของคุณคือเฝ้ากล้องวงจรปิดตั้งแต่เวลา 00:00 AM ถึง 06:00 AM\n";
-    Sleep(2500);
-    
-    std::cout << "\n ก่อนเริ่มงาน หัวหน้าชุดเก่าได้ทิ้ง \"กฎเหล็ก\" เอาไว้ในกระดาษ:\n";
-    std::cout << " -------------------------------------------------------\n";
-    std::cout << "  1. ช่วงเที่ยงคืน (00:00) คือช่วงเตรียมตัว ระบบจะยังปกติ\n";
-    std::cout << "  2. ตั้งแต่ตี 1 เป็นต้นไป \"อย่าเชื่อในสิ่งที่คุณเห็นครั้งที่สอง\"\n";
-    std::cout << "  3. ถ้าเห็นสิ่งของผิดที่ หรือมีอะไรแปลกปลอมโผล่มาในกล้อง...\n";
-    std::cout << "     จงกด [F] ล็อกประตูห้องนั้นขังมันไว้ทันที!\n";
-    std::cout << "  4. บริหารแบตเตอรี่ (15 หน่วย) ให้ดี ถ้าหมด...คุณจะไม่รอด\n";
-    std::cout << " -------------------------------------------------------\n\n";
-    Sleep(1500);
-    
-    std::cout << " >> กดปุ่มใดๆ เพื่อเข้าสู่ห้องควบคุมและเริ่มกะดึกของคุณ << \n";
-    _getch(); // รอผู้เล่นกดปุ่มเพื่อเริ่มเกมเข้าสู่ Turn 0
-
-    // ---------------------------------------------------------
-    // 3. ระบบ Gameplay หลัก
-    // ---------------------------------------------------------
-    system("cls");
-    std::cout << "=====================================================" << std::endl;
-    std::cout << " >> ขอแสดงความยินดีด้วย! คุณได้รับการจ้างงาน" << std::endl;
-    std::cout << " >> กะของคุณจะเริ่มในเวลา 00:00 AM. ขอให้โชคดี" << std::endl;
-    std::cout << "=====================================================" << std::endl;
-    Sleep(2500);
-
-    Game myGame(currentConfig);
-
-    while (myGame.getIsRunning()) {
-        myGame.processInput(); 
-        myGame.update();       
-        Sleep(30); 
-    }
-
-    std::cout << "\n>> กดปุ่มใดๆ เพื่อออก..." << std::endl;
-    while (!_kbhit()) {
-        // วนลูปสั้นๆ รอจนกว่าผู้เล่นจะกดปุ่ม
-    }
-    _getch(); // เคลียร์ปุ่มที่กด
+    while (_kbhit()) _getch();
+    _getch();
 
     return 0;
 }

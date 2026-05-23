@@ -1,7 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "Config.h"
+#include "Game.h"
 
 class Menu {
 public:
