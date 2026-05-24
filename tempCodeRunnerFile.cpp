@@ -1,1 +1,0 @@
-    // หน้าฉากตายจริง (ASCII Jumpscare)

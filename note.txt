@@ -1,0 +1,5 @@
+g++ testcase.cpp -o testcase -lsfml-graphics -lsfml-window -lsfml-system
+g++ testSFML.cpp -o testSFML -lsfml-graphics -lsfml-window -lsfml-system
+g++ Game.cpp -o Game -lsfml-graphics -lsfml-window -lsfml-system
+g++ Game.cpp Random.cpp -o Game -lsfml-graphics -lsfml-window -lsfml-system
+g++ TNIF.cpp -o TNIF -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio

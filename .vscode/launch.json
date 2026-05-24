@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Lenovo LOQ/OneDrive - King Mongkut’s University of Technology Thonburi (KMUTT)/Desktop/FRA143 The Night at FIBO [ Final ]",
-      "program": "c:/Users/Lenovo LOQ/OneDrive - King Mongkut’s University of Technology Thonburi (KMUTT)/Desktop/FRA143 The Night at FIBO [ Final ]/build/Debug/outDebug",
+      "cwd": "c:/Users/Moltol Juangsanthia/Desktop/VS/Game",
+      "program": "c:/Users/Moltol Juangsanthia/Desktop/VS/Game/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
