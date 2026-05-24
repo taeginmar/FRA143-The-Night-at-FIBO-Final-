@@ -3,8 +3,6 @@
 #include <string>
 #include "Random.cpp" 
 
-
-
 void SetTurn0 (RandomEvent& gameSystem) {
 
     gameSystem.ClearRoom();

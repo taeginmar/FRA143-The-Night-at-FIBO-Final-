@@ -4,23 +4,6 @@
 #include <memory>
 #include <iostream>
 
-class Player {
-private:
-    int energy_;
-    bool IsAlive_;
-public:
-    Player(int energy,bool IsAlive) : energy_(energy), IsAlive_(IsAlive) {
-        this-> energy_ = 0;
-        this-> IsAlive_ = true;
-    }
-
-    void setEnergy(int val) { energy_ = val; }
-
-
-    int getEnergy() { return energy_; } 
-    
-};
-
 class Room {
     public:
         Room(int id_, bool IsAnamoly_, double anachang_, std::string normalpic_, std::vector<std::string> anamolypic_,std::string PicNow_, bool lock_)
@@ -57,6 +40,31 @@ class Room {
         bool lock;
 };
 
+class SetRoom : public Room {
+    public:
+        SetRoom(int id_, bool IsAnamoly_, double anachang_, std::string normalpic_, std::vector<std::string> anamolypic_,std::string PicNow_, bool lock_):Room(id_, anachang_, normalpic_, anamolypic_) {
+        }
+
+        bool GetIsAnamoly() const {return IsAnamoly;}
+        std::string GetPicNow() const {return PicNow;}
+        bool GetLock() const {return lock;}
+
+        void SetIsAnamoly(bool status) {
+            IsAnamoly = status;
+        } 
+
+        void SetPicNow(std::string PicSelected) {
+            PicNow = PicSelected;
+        }
+
+        void SetLock(bool jj) {
+            lock = jj;
+        }
+    private:
+        bool IsAnamoly;
+        std::string PicNow;
+        bool lock;
+};
 
 class RandomEvent {
     public:
@@ -71,22 +79,23 @@ class RandomEvent {
         }
 
         void RunRandom() {
-
             std::string PicSelected = "none";
             for(auto r = allrooms_.begin(); r != allrooms_.end(); ++r){
                 std::bernoulli_distribution dice((*r)->GetChang());
-                bool fate = dice(rng);
-                (*r)->SetIsAnamoly(fate);
+                bool fate = dice(rng); // ทอยลูกเต๋าเพื่อกำหนดสถานะ Anomaly ของห้อง โดยใช้ความน่าจะเป็นที่กำหนดในแต่ละห้อง 0.0 - 1.0
+                (*r)->SetIsAnamoly(fate); // กำหนดสถานะ Anomaly ตามผลลัพธ์ของการทอยลูกเต๋า
+
                 if (fate == true) {
-                    std::vector<std::string> pic_ = ((*r)->GetAnamolyPic());
-                    if(pic_.size() != 0){
-                        std::uniform_int_distribution<int> PicDice(0,pic_.size()-1);
-                        int RandomPicIndex = PicDice(rng);
+                    std::vector<std::string> pic_ = ((*r)->GetAnamolyPic()); //ดึงชื่อภาพ Anomaly ที่เป็นไปได้ของห้องนั้นๆ มาเก็บไว้ในตัวแปร pic_
+                    if(pic_.size() != 0){ //ตรวจสอบว่ามีภาพ Anomaly รึเปล่า
+                        std::uniform_int_distribution<int> PicDice(0,pic_.size()-1);//กำหนดขอบเขตการสุ่ม
+                        int RandomPicIndex = PicDice(rng); //ใช้ rng เป็นตัวสุ่มค่า index
                         PicSelected = pic_[RandomPicIndex];
                         (*r)->SetPicNow(PicSelected);
 
                     }
                 }
+
                 else {
                     PicSelected = (*r)->GetNormalPic();
                     (*r)->SetPicNow(PicSelected);

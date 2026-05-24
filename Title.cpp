@@ -54,7 +54,6 @@ int Title() {
                     }
 
                     if(Start.getGlobalBounds().contains(MousePosi)){
-                        std::cout<< 1;
                         return 1;
                     }
                 }

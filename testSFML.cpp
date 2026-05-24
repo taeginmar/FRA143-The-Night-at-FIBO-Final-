@@ -231,13 +231,6 @@ bool PlayableTurn0 (RandomEvent& gameSystem) {
     return true;
 } 
 
-
-
-
-
-
-
-
 bool PlayableTurn (RandomEvent& gameSystem) {
 
     SetTurn(gameSystem);
@@ -319,7 +312,7 @@ bool PlayableTurn (RandomEvent& gameSystem) {
     Skiped.setPosition({800.f,750.f});
     Skiped.setFillColor(sf::Color(128,128,128));
 
-    sf::Text skiptext(gameFont,"SKIP",16);
+    sf::Text skiptext(gameFont,"PASS",16);
     skiptext.setPosition({810.f,755.f});
     skiptext.setFillColor(sf::Color::Black);
 
